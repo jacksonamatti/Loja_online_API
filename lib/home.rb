@@ -39,13 +39,43 @@ def addProductCart(carrinho_de_compras)
   end
   end
 
+  def viewCart
+    if @carrinho_de_compras.empty?
+      puts "Carrinho vazio."
+    else
+      puts "Produtos no Carrinho:\n\n"
+      @carrinho_de_compras.each do |itens|
+        puts itens[:produto], itens[:preco]
+      end
+    end
+  end
+
+def removeCart
+  print"\n Digite o nome do produto para remover da lista"
+  productname=gets.chomp
+  produto = @carrinho_de_compras.find { |item| item[:produto] == productname }
+  if produto
+    print "deseja deletar o produto #{produto[:produto]} - #{produto[:preco]}"
+    deleteProduto = gets.chomp.downcase
+    if  deleteProduto=="s"
+      @carrinho_de_compras.delete(produto)
+      puts 'Produto removido com sucesso!'
+      else
+        puts "deu erro"
+      end
+    else
+      puts "Produto não encontrado no carrinho."
+    end
+  end
 
 
-
-
-
-
-
+  def show_total
+    if !@carrinho_de_compras.empty?
+      puts "Total a pagar R$ #{@carrinho_de_compras.map{|x| x[:preco].to_f}.reduce(:+)} \n"
+      else
+        puts "Nenhum Produto cadastrado"
+        end
+        end
 
 
 
@@ -53,7 +83,11 @@ def start
   flag = true
   puts "bem vindo a loja virtual\n"
   while flag
-    print("selecione o que gostaria de fazer:\n1. Exibir todos produtos\n2. Ver produto expecifico\n3. adicionar produto no carrinho\n4. Editar produto no carrinho\n5. Remover produto do carrinho 6. Calcular Frete\n7. Ver produtos no carrinho\n8.Ver valor total dos produtos no carrinho \n0. Sair\n")
+    print("selecione o que gostaria de fazer:\n1.
+      Exibir todos produtos\n2. Ver produto expecifico\n3.
+      adicionar produto no carrinho\n4.
+      Ver produtos no carrinho\n5. Remover produto do carrinho\n6.editar produto
+      \n7.Ver valor total dos produtos no carrinho \n0. Sair\n")
     resposta = gets.chomp.to_i
     case resposta
     when 0
@@ -65,10 +99,12 @@ def start
         productselect
       when 3
         addProductCart(@carrinho_de_compras)
-
-
-
-
+      when 4
+        viewCart
+      when 5
+        removeCart
+        when 6
+          show_total
     end
   end
   end
